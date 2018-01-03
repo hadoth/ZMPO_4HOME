@@ -1,13 +1,16 @@
-//
-// Created by kpokomeda on 03.01.18.
-//
-
 #ifndef ZMPO_4B_VALUE_H
 #define ZMPO_4B_VALUE_H
 
 
-class Value {
-
+template <class T> class Value {
+private:
+    T value;
+public:
+    Value(T value) {this->value = value;}
+    inline T evaluate() { return this->value;}
+protected:
+    Value() {};
+    inline void setValue(T value) {this->value = value;}
 };
 
 
