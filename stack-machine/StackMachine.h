@@ -28,77 +28,50 @@
 template <class T> class StackMachine {
 public:
     StackMachine()  {}
-    void run() {
-        bool shouldContinue = true;
-
-        while (shouldContinue) {
-            bool fillSuccessful = fillStack();
-            shouldContinue = this->shouldContinue();
-        }
+    void value(T value) {
+        Value<T> object(value);
+        this->stack.push(object);
+    }
+    void add() {
+        Add<T> object;
+        handleOperation(object);
     }
 
+    void subtract() {
+        Subtract<T> object;
+        handleOperation(object);
+
+    }
+    void multiply() {
+        Multiply<T> object;
+        handleOperation(object);
+    }
+    void divide() {
+        Divide<T> object;
+        handleOperation(object);
+    }
+    T getResult() {
+        if (this->stack.isEmpty()) {
+            throw std::invalid_argument("Invalid expression: stack is empty!");
+        } else if (this->stack.size() > 1) {
+            throw std::invalid_argument("Invalid expression: too many arguments!");
+        } else {
+            return this->stack.pop().getValue();
+        }
+    }
+    void clear() {
+        this->stack.clear();
+    }
 private:
-    Stack<ValueObject<T>> stack;
-    bool shouldContinue() {
-        char answer[64];
-        for (auto index = 0; index < 10; index++) {
-            std::cout << "Would You like to continue? (Y/N)" << std::endl;
-            std::cin >> answer;
-            if (CharUtils::equals(answer, "y")) {
-                return true;
-            }
-            if (CharUtils::equals(answer, "n")) {
-                std::cout << "Bye!" << std::endl;
-                return false;
-            }
-            std::cout << "Communicate not recognized!" << std::endl;
-        }
-        std::cout << "Critical number of iterations exceeded, the program will finish." << std::endl;
-        return false;
-    }
-    bool fillStack() {
-        char userInput[64];
-
-        for (auto index = 0; index < 124; index++){
-            std::cin >> userInput;
-            if (CharUtils::equals(userInput, "+")) {
-                Add<T> object;
-                stack.push(object);
-                continue;
-            }
-            if (CharUtils::equals(userInput, "-")) {
-                Subtract<T> object;
-                stack.push(object);
-                continue;
-            }
-            if (CharUtils::equals(userInput, "*")) {
-                Multiply<T> object;
-                stack.push(object);
-                continue;
-            }
-            if (CharUtils::equals(userInput, "/")) {
-                Divide<T> object;
-                stack.push(object);
-                continue;
-            }
-            if (CharUtils::equals(userInput, "=")) {
-                return true;
-            }
-            std::stringstream stream;
-            for (auto charIndex = 0; charIndex < 64; charIndex++) {
-                stream.put(userInput[charIndex]);
-                if (userInput[charIndex] == 0) {
-                    break;
-                }
-            }
-            T value;
-            stream >> value;
-            Value<T> object(value);
+    void handleOperation(ValueObject<T>& object) {
+        if (stack.size() >= 2) {
+            object.accept(stack);
             this->stack.push(object);
+        } else {
+            throw std::invalid_argument("Invalid expression: not enough arguments!");
         }
-        std::cout << "Maximum number of operators exceeded!" << std::endl;
-        return false;
     }
+    Stack<ValueObject<T>> stack;
 };
 
 #endif //ZMPO_4B_STACKMACHINE_H

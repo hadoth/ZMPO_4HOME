@@ -19,7 +19,7 @@ public:
     T& pop();
     inline bool isEmpty() { return this->sizeOf <= 0;}
     inline unsigned int size() { return this->sizeOf;}
-
+    inline void clear() { if(!this->isEmpty()) {delete this->head; this->sizeOf = 0;}}
 };
 
 #include "Stack.cpp"

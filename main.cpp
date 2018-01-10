@@ -2,22 +2,30 @@
 #include <stdexcept>
 #include "test/RationalTest.h"
 #include "utils/Stack.h"
-#include "rational/RationalUtils.h"
-#include "rational/Rational.h"
+#include "stack-machine/operators/Value.h"
+#include "stack-machine/operators/Add.h"
+#include "stack-machine/StackMachine.h"
+#include "stack-calculator/StackCalculator.h"
 
 int main() {
-    RationalTest::run();
+//    RationalTest::run();
 
-    Stack<int> stack;
-    stack.push(10);
-    stack.push(12);
+    Value<int> val1(10);
+    Value<int> val2(12);
+    Add<int> result;
 
-    std::cout << stack.isEmpty() << " " << stack.pop() << std::endl;
-    std::cout << stack.isEmpty() << " " << stack.pop() << std::endl;
-    try {
-        std::cout << stack.isEmpty() << " " << stack.pop() << std::endl;
-    } catch (std::exception &e) {
-        std::cout << e.what() << std::endl;
-    }
+    Stack<ValueObject<int>> stack;
 
+    stack.push(val1);
+    stack.push(val2);
+    stack.push(result);
+
+    ValueObject<int>& object = stack.pop();
+    object.accept(stack);
+
+    std::cout << stack.isEmpty() << std::endl;
+    std::cout << object.getValue() << std::endl;
+
+    StackCalculator<int> stackCalculator;
+    stackCalculator.run();
 }

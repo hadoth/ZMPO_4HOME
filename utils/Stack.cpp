@@ -6,7 +6,8 @@ template <class T> Stack<T>::~Stack() {
 }
 
 template <class T> void Stack<T>::push(T& t) {
-    this->head = new Node(t, this->head);
+    Node* oldHead = this->head;
+    this->head = new Node(t, oldHead);
     this->sizeOf++;
 }
 
