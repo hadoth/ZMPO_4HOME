@@ -5,9 +5,9 @@ template <class T> class Stack {
 private:
     class Node {
     public:
-        T& value;
+        T value;
         Node* next;
-        Node(T& value, Node* next): value(value), next(next) {}
+        Node(T value, Node* next): value(value), next(next) {}
         ~Node() {delete next;}
     };
     Node* head;
@@ -15,8 +15,8 @@ private:
 public:
     Stack(): sizeOf(0), head(nullptr) {};
     ~Stack();
-    void push(T& t);
-    T& pop();
+    void push(T t);
+    T pop();
     inline bool isEmpty() { return this->sizeOf <= 0;}
     inline unsigned int size() { return this->sizeOf;}
     inline void clear() { if(!this->isEmpty()) {delete this->head; this->sizeOf = 0;}}

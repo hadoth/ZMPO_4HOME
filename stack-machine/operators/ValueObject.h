@@ -8,10 +8,10 @@ private:
     T value;
 protected:
     inline void setValue(T value) { this->value = value;}
-    inline void handleEmptyStack(Stack<ValueObject<T>>& stack) {if (stack.isEmpty()) {throw std::out_of_range("Illegal argument: the stack is empty");}}
+    inline void handleEmptyStack(Stack<ValueObject<T>*>& stack) {if (stack.isEmpty()) {throw std::out_of_range("Illegal argument: the stack is empty");}}
 public:
     inline T getValue() { return this->value;}
-    virtual void accept(Stack<ValueObject<T>>& stack) = 0;
+    virtual void accept(Stack<ValueObject<T>*>& stack) = 0;
 };
 
 

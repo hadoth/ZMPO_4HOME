@@ -51,6 +51,7 @@ private:
                     T result = stackMachine.getResult();
                     std::cout << result << std::endl;
                     stackMachine.clear();
+                    return;
                 }
                 std::stringstream stream;
                 stream.clear();

@@ -7,7 +7,7 @@
 template <class T> class Value: public ValueObject<T> {
 public:
     Value(T value) { this->setValue(value);}
-    inline void accept(Stack<ValueObject<T>>& stack) {};
+    inline void accept(Stack<ValueObject<T>*>& stack) {};
 };
 
 

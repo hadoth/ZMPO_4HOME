@@ -29,49 +29,57 @@ template <class T> class StackMachine {
 public:
     StackMachine()  {}
     void value(T value) {
-        Value<T> object(value);
+        ValueObject<T>* object = new Value<T>(value);
         this->stack.push(object);
     }
     void add() {
-        Add<T> object;
+        ValueObject<T>* object = new Add<T>;
         handleOperation(object);
     }
 
     void subtract() {
-        Subtract<T> object;
+        ValueObject<T>* object = new Subtract<T>;
         handleOperation(object);
 
     }
     void multiply() {
-        Multiply<T> object;
+        ValueObject<T>* object = new Multiply<T>;
         handleOperation(object);
     }
     void divide() {
-        Divide<T> object;
+        ValueObject<T>* object = new Divide<T>;
         handleOperation(object);
     }
     T getResult() {
         if (this->stack.isEmpty()) {
             throw std::invalid_argument("Invalid expression: stack is empty!");
         } else if (this->stack.size() > 1) {
+            this->stack.clear();
             throw std::invalid_argument("Invalid expression: too many arguments!");
         } else {
-            return this->stack.pop().getValue();
+            ValueObject<T>* pObject = this->stack.pop();
+            T returnValue = pObject->getValue();
+            delete(pObject);
+            return returnValue;
         }
     }
+
     void clear() {
-        this->stack.clear();
+        while (!stack.isEmpty()) {
+            ValueObject<T>* value = stack.pop();
+            delete(value);
+        }
     }
 private:
-    void handleOperation(ValueObject<T>& object) {
+    void handleOperation(ValueObject<T>* object) {
         if (stack.size() >= 2) {
-            object.accept(stack);
+            object->accept(stack);
             this->stack.push(object);
         } else {
             throw std::invalid_argument("Invalid expression: not enough arguments!");
         }
     }
-    Stack<ValueObject<T>> stack;
+    Stack<ValueObject<T>*> stack;
 };
 
 #endif //ZMPO_4B_STACKMACHINE_H
