@@ -36,6 +36,7 @@ private:
     int numerator;
     int denominator;
 public:
+    Rational(): numerator(0), denominator(1) {};
     Rational(int numerator, int denominator);
     Rational(int numerator): numerator(numerator), denominator(1) {};
     Rational operator +(const Rational& rational);
@@ -44,6 +45,7 @@ public:
     Rational& operator +=(const int integer);
     Rational operator -(const Rational& rational);
     Rational operator -(const int integer);
+    Rational operator -();
     Rational& operator -=(const Rational& rational);
     Rational& operator -=(const int integer);
     Rational operator *(const Rational& rational);

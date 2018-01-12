@@ -54,7 +54,7 @@ Rational &Rational::operator+=(const int integer) {
 }
 
 Rational Rational::operator-(const Rational &rational) {
-    int newNumerator = this->numerator * rational.denominator - rational.denominator * this->denominator;
+    int newNumerator = this->numerator * rational.denominator - rational.numerator * this->denominator;
     int newDenominator = this->denominator * rational.denominator;
     return Rational(newNumerator, newDenominator);
 }
@@ -270,11 +270,17 @@ std::ostream &operator<<(std::ostream &o, const Rational &rational) {
 
 std::istream &operator>>(std::istream &i, Rational &rational) {
     std::string temp = "";
-    getline(std::cin, temp);
+    getline(i, temp);
     std::size_t slashPos = temp.find("/");
     if (slashPos != std::string::npos) {
-        int tempNumerator = std::stoi(temp.substr(0, slashPos));
-        int tempDenominator = std::stoi(temp.substr(slashPos + 1));
+        int tempNumerator;
+        int tempDenominator;
+        try {
+            tempNumerator = std::stoi(temp.substr(0, slashPos));
+            tempDenominator = std::stoi(temp.substr(slashPos + 1));
+        } catch (std::invalid_argument e) {
+            throw std::invalid_argument("Invalid expression: provided value cannot be parsed to number!");
+        }
 
         if (tempDenominator < 0) {
             tempDenominator *= -1;
@@ -291,9 +297,19 @@ std::istream &operator>>(std::istream &i, Rational &rational) {
             rational.denominator = tempDenominator;
         }
     } else {
-        int tempNumerator = std::stoi(temp);
+        int tempNumerator;
+        try {
+            tempNumerator = std::stoi(temp);
+        } catch (std::invalid_argument e) {
+            throw std::invalid_argument("Invalid expression: provided value cannot be parsed to number!");
+        }
         rational.numerator = tempNumerator;
         rational.denominator = 1;
     }
     return i;
+}
+
+Rational Rational::operator-() {
+    this->numerator *= -1;
+    return *this;
 }

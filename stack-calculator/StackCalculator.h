@@ -13,6 +13,7 @@ private:
             std::cout << "Would You like to continue? (Y/N)" << std::endl;
             std::cin >> answer;
             if (CharUtils::equals(answer, "y")) {
+                std::cout << "---===|||===---" << std::endl;
                 return true;
             }
             if (CharUtils::equals(answer, "n")) {
@@ -26,6 +27,7 @@ private:
     }
 
     void readInput() {
+        std::cout << "Please provide numbers and operators accordingly to the RPN rules." << std::endl;
         char userInput[64];
 
         for (auto index = 0; index < 124; index++) {
@@ -66,6 +68,8 @@ private:
                 stackMachine.value(value);
             } catch (std::invalid_argument e) {
                 std::cout << e.what() << std::endl;
+                stackMachine.clear();
+                return;
             }
         }
         std::cout << "Maximum number of operators exceeded!" << std::endl;
